@@ -10,7 +10,9 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 
 import org.javabrains.model.Message;
 import org.javabrains.service.MessageService;
@@ -29,8 +31,14 @@ public class MessageResource {
 	@GET
 	@Path("/{messageId}")
 	@Produces(MediaType.APPLICATION_XML)
-	public Message getMessage(@PathParam("messageId") Long msgId) {
-		return msgService.getMessage(msgId);    //http://localhost:8080/messenger/service/messages/{messageId}
+	public Message getMessage(@PathParam("messageId") Long msgId, @Context UriInfo uriInfo) {
+		Message message =  msgService.getMessage(msgId);    //http://localhost:8080/messenger/service/messages/{messageId}
+		String uri = uriInfo.getBaseUriBuilder()
+		.path(MessageResource.class)
+		.path(Long.toString(message.getId()))
+		.build().toString();
+		message.addLink(uri, "self");
+		return message;
 	}
 	
 	@POST

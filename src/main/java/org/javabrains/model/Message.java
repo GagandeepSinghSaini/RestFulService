@@ -1,6 +1,8 @@
 package org.javabrains.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -11,6 +13,7 @@ public class Message {
 	private String message;
 	private Date created;
 	private String author;
+	private List<Link> links = new ArrayList<Link>();
 	
 	public Message() {
 		// no body
@@ -47,6 +50,17 @@ public class Message {
 	public void setCreated(Date created) {
 		this.created = created;
 	}
-	
+	public List<Link> getLinks() {
+		return links;
+	}
+	public void setLinks(List<Link> links) {
+		this.links = links;
+	}
+	public void addLink(String linkUrl, String linkRel) {
+		Link link = new Link();
+		link.setRel(linkRel);
+		link.setUrl(linkUrl);
+		links.add(link);
+	}
 		
 }

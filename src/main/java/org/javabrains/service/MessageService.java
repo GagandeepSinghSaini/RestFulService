@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.javabrains.database.DatabaseClass;
+import org.javabrains.exception.DataNotFoundException;
 import org.javabrains.model.Message;
 
 public class MessageService {
@@ -16,7 +17,11 @@ public class MessageService {
 	}
 	
 	public Message getMessage(long id) {
-		return messages.get(id);
+		Message message = messages.get(id);
+		if(message == null) {
+			throw new DataNotFoundException("Exxception for message id: "+id);
+		}
+		return message;
 	}
 	
 	public Message addMessage(Message message) {
